@@ -1,0 +1,54 @@
+from flask import Flask , render_template, flash, redirect, url_for
+from forms import RegistrationForm,LoginForm
+app = Flask('__name__')
+
+app.config['SECRET_KEY'] = '352503b0a28a1e79a92dde75ea02b971'
+
+itemlist=[
+    {
+    "type":"ranica",
+    "name":"ranica",
+    "prise":"100lv",
+    "avalable":"100"
+    },
+    {
+    "type":"chanta",
+    "name":"sak",
+    "prise":"50lv",
+    "avalable":"200"
+    }
+]
+@app.route('/')
+@app.route('/home')
+def home():
+    return render_template("home.html",title='home')
+
+@app.route('/about')
+def about():
+    return render_template("about.html",title='about')
+
+@app.route('/items')
+def items():
+    return render_template("items.html",title='items',items=itemlist,all=all)
+
+@app.route('/register', methods=['GET','POST'])
+def register():
+    form= RegistrationForm()
+    if form.validate_on_submit():
+        flash(f'Account created for {form.username.data}!','success')
+        return redirect(url_for('home'))
+    return render_template('register.html',title='Register',form=form)
+
+@app.route('/login', methods=['GET','POST'])
+def login():
+    form= LoginForm()
+    if form.validate_on_submit():
+        if form.email.data=='email@gmail.com' and form.password.data=='password':
+            flash('You have been logged in','success')
+            return redirect(url_for('home'))
+        else:
+            flash('Login unsuccessful','danger')
+    return render_template('login.html',title='Login',form=form)
+
+if __name__=='__main__':
+    app.run(debug=True)

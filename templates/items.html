@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+  {% for item in items %}
+    <div class="container bg-g7" style=" border-radius: 5px; margin:1%;">
+      <h1>{{item.name}}</h1>
+      <h2>{{ item.prise }}</h2>
+      <h6>Avalable {{ item.avalable }}</h6>
+    </div>
+  {% endfor %}
+{% endblock content %}

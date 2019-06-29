@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+
+  <head>
+
+    <meta charset="utf-8">
+    {% if title%}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>Flask</title>
+    {% endif %}
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}" -->
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <style media="screen">
+    body {
+      background-color: #d0d0d0
+    }
+      .nav-item {
+        border-radius: 10px;
+        padding: 10% auto;
+        margin: 5% 5% 5% 5%;
+      }
+
+      .nav-item:hover {
+        background-color: gray;
+        border-radius: 5px;
+        border-color: black;
+      }
+
+      .bg-g1 {
+        background-color: #111;
+      }
+
+      .bg-g3 {
+        background-color: #333;
+      }
+
+      .bg-g5 {
+        background-color: #555;
+      }
+
+      .bg-g7 {
+        background-color: #777;
+      }
+
+      .bg-g9 {
+        background-color: #999;
+      }
+
+      .bg-gb {
+        background-color: #bbb;
+      }
+
+      .bg-gd {
+        background-color: #ddd;
+      }
+
+      .bg-white {
+        background-color: white;
+      }
+
+      .bg-black {
+        background-color: black;
+      }
+    </style>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link"  style="font-size: 150%" href="{{url_for('home')}}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  style="font-size: 150%" href="{{url_for('items')}}">Items</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  style="font-size: 150%" href="{{url_for('register')}}">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  style="font-size: 150%" href="{{url_for('login')}}">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  style="font-size: 150%" href="#">About</a>
+          </li>
+
+      </ul>
+    </nav>
+
+
+
+    <div class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message  in messages %}
+            <div class="alert alert-{{category}}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  </body>
+</html>
