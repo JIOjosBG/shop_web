@@ -48,9 +48,19 @@ def items():
 def register():
     form= RegistrationForm()
     if form.validate_on_submit():
+
+        username=form.username.data
+        email=form.email.data
+        password=form.password.data
+        user=User(username=username,email=email,password=password)
+        print(user,"\n \n \n")
+        db.session.add(user)
+        db.session.commit()
+        print(user.query.all())
         flash(f'Account created for {form.username.data}!','success')
         return redirect(url_for('home'))
     return render_template('register.html',title='Register',form=form)
+
 
 @app.route('/login', methods=['GET','POST'])
 def login():
