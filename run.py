@@ -44,19 +44,30 @@ def about():
 def items():
     return render_template("items.html",title='items',items=itemlist,all=all)
 
+
 @app.route('/register', methods=['GET','POST'])
 def register():
     form= RegistrationForm()
     if form.validate_on_submit():
-
         username=form.username.data
         email=form.email.data
         password=form.password.data
         user=User(username=username,email=email,password=password)
-        print(user,"\n \n \n")
-        db.session.add(user)
-        db.session.commit()
-        print(user.query.all())
+        allusers=list()
+        for user in user.query.all():
+            allusers.append([user.username,user.email])
+        here=False
+        for one in allusers:
+            if username == one[0] or email == one[1]:
+                here=True
+        if here==False:
+            db.session.add(user)
+            db.session.commit()
+            flash(f'Account created for {form.username.data}!','success')
+            return redirect(url_for('home'))
+        else:
+            flash(f'Could not create account.Username or email is already taken!','danger')
+            return redirect(url_for('register'))
         flash(f'Account created for {form.username.data}!','success')
         return redirect(url_for('home'))
     return render_template('register.html',title='Register',form=form)
