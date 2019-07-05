@@ -17,6 +17,17 @@ class User(db.Model):
     def __repr__(self):
         return f"User('{self.username}','{self.email}','{self.image_file}')"
 
+class Items(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200),nullable=False,unique=True)
+    image_file = db.Column(db.String(20),nullable=False,default='no.jpg')
+    price = db.Column(db.String(10),nullable=False)
+    type = db.Column(db.String(30),nullable=False,default='NOT_GIVEN')
+
+    def __repr__(self):
+        return f"User('{self.type}','{self.name}','{self.price}','{self.id}','{self.image_file}')"
+
+
 itemlist=[
     {
     "type":"ranica",
@@ -44,7 +55,6 @@ def about():
 def items():
     return render_template("items.html",title='items',items=itemlist,all=all)
 
-
 @app.route('/register', methods=['GET','POST'])
 def register():
     form= RegistrationForm()
@@ -53,12 +63,9 @@ def register():
         email=form.email.data
         password=form.password.data
         user=User(username=username,email=email,password=password)
-        allusers=list()
-        for user in user.query.all():
-            allusers.append([user.username,user.email])
         here=False
-        for one in allusers:
-            if username == one[0] or email == one[1]:
+        for user in user.query.all():
+            if username == user.username or email==user.email:
                 here=True
         if here==False:
             db.session.add(user)
@@ -76,8 +83,12 @@ def register():
 @app.route('/login', methods=['GET','POST'])
 def login():
     form= LoginForm()
+    email=form.email.data
+    password=form.password.data
+    user=User(email=email,password=password)
+
     if form.validate_on_submit():
-        if form.email.data=='email@gmail.com' and form.password.data=='password':
+        if User.query.filter_by(email=email,password=password).first():
             flash('You have been logged in','success')
             return redirect(url_for('home'))
         else:
