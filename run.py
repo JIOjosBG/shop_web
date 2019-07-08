@@ -7,7 +7,7 @@ app.config['SECRET_KEY'] = '352503b0a28a1e79a92dde75ea02b971'
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///site.db'
 db = SQLAlchemy(app)
 
-class User(db.Model):
+class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20),nullable=False,unique=True)
     email = db.Column(db.String(120),nullable=False,unique=True)
@@ -28,20 +28,6 @@ class Items(db.Model):
         return f"User('{self.type}','{self.name}','{self.price}','{self.id}','{self.image_file}')"
 
 
-itemlist=[
-    {
-    "type":"ranica",
-    "name":"ranica",
-    "prise":"100lv",
-    "avalable":"100"
-    },
-    {
-    "type":"chanta",
-    "name":"sak",
-    "prise":"50lv",
-    "avalable":"200"
-    }
-]
 @app.route('/')
 @app.route('/home')
 def home():
@@ -53,28 +39,27 @@ def about():
 
 @app.route('/items')
 def items():
-    return render_template("items.html",title='items',items=itemlist,all=all)
+    return render_template("items.html",title='items',items=Items.query.all())
 
 @app.route('/register', methods=['GET','POST'])
 def register():
     form= RegistrationForm()
     if form.validate_on_submit():
+        print(Users.query.all())
         username=form.username.data
         email=form.email.data
         password=form.password.data
-        user=User(username=username,email=email,password=password)
-        here=False
-        for user in user.query.all():
-            if username == user.username or email==user.email:
-                here=True
-        if here==False:
+        if Users.query.filter_by(username=username).first():
+            flash(f'Could not create account.Username or email is already taken!','danger')
+            return redirect(url_for('register'))
+        else:
+            user=Users(username=username,password=password,email=email)
             db.session.add(user)
             db.session.commit()
             flash(f'Account created for {form.username.data}!','success')
+            print(Users.query.all())
             return redirect(url_for('home'))
-        else:
-            flash(f'Could not create account.Username or email is already taken!','danger')
-            return redirect(url_for('register'))
+            
         flash(f'Account created for {form.username.data}!','success')
         return redirect(url_for('home'))
     return render_template('register.html',title='Register',form=form)
@@ -85,10 +70,10 @@ def login():
     form= LoginForm()
     email=form.email.data
     password=form.password.data
-    user=User(email=email,password=password)
+    user=Users(email=email,password=password)
 
     if form.validate_on_submit():
-        if User.query.filter_by(email=email,password=password).first():
+        if Users.query.filter_by(email=email,password=password).first():
             flash('You have been logged in','success')
             return redirect(url_for('home'))
         else:
