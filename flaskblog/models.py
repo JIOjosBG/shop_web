@@ -18,4 +18,4 @@ class Items(db.Model):
     type = db.Column(db.String(30),nullable=False,default='NOT_GIVEN')
 
     def __repr__(self):
-        return f"User('{self.type}','{self.name}','{self.price}','{self.id}','{self.image_file}')"
+        return f"Items('{self.type}','{self.name}','{self.price}','{self.id}','{self.image_file}')"

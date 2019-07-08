@@ -2,7 +2,8 @@
 {% block content %}
   {% for item in items %}
     <div class="container bg-g7" style=" border-radius: 5px; margin:1%;">
-      <h1>{{item}}</h1>
+      <h1>{{item.name}}</h1>
+      <h2>{{ item.price }}</h2>
     </div>
   {% endfor %}
 {% endblock content %}

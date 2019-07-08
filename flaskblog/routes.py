@@ -1,10 +1,9 @@
 from flask import render_template, flash, redirect, url_for
 from flaskblog import app, db
 from flaskblog.models import Users, Items
-from flaskblog.forms import RegistrationForm,LoginForm
+from flaskblog.forms import RegistrationForm,LoginForm, NewItemForm
 
-print(Items.query.all(),Users.query.all())
-itemlist=Users.query.all()
+itemlist=Items.query.all()
 
 @app.route('/')
 @app.route('/home')
@@ -57,3 +56,27 @@ def login():
         else:
             flash('Login unsuccessful','danger')
     return render_template('login.html',title='Login',form=form)
+
+
+@app.route('/newitem', methods=['GET','POST'])
+def newitem():
+
+    form= NewItemForm()
+    if form.validate_on_submit():
+        print(Items.query.all())
+        name=form.name.data
+        price=form.price.data
+        type=form.type.data
+        image_file=form.image.data
+        if Items.query.filter_by(name=name).first():
+            flash(f'Name already used!','danger')
+            return redirect(url_for('newitem'))
+        else:
+
+            new_item=Items(price=price,name=name,type=type,image_file=image_file)
+            db.session.add(new_item)
+            db.session.commit()
+            flash(f'Item added {form.name.data}!','success')
+            return redirect(url_for('items'))
+            
+    return render_template('newitem.html',title='New Item',form=form)
