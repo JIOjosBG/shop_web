@@ -76,6 +76,11 @@
       .bg-black {
         background-color: black;
       }
+
+      .newitem {
+        background-color: red;
+        border-radius: 5px;
+      }
     </style>
   </head>
   <body>
@@ -94,8 +99,13 @@
           <li class="nav-item">
             <a class="nav-link"  style="font-size: 150%" href="{{url_for('login')}}">Login</a>
           </li>
+          {% if 1==1 %}
+            <li class="nav-item">
+              <a class="nav-link newitem"  style="font-size: 150%" href="{{url_for('newitem')}}">New Item</a>
+            </li>
+          {% endif %}
           <li class="nav-item">
-            <a class="nav-link"  style="font-size: 150%" href="#">About</a>
+            <a class="nav-link"  style="font-size: 150%" href="{{url_for('about')}}">About</a>
           </li>
 
       </ul>
