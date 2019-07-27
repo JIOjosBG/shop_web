@@ -1,8 +1,12 @@
+import os
+import secrets
 from flask import render_template, flash, redirect, url_for, request
 from flaskblog import app, db, bcrypt
 from flaskblog.models import Users, Items, Orders
 from flaskblog.forms import RegistrationForm,LoginForm, NewItemForm
 from flask_login import login_user, current_user, logout_user, login_required
+
+print(Items.query.all())
 
 itemlist=Items.query.all()
 
@@ -14,6 +18,7 @@ def home():
 @app.route('/about')
 def about():
     return render_template("about.html",title='about')
+
 
 @app.route('/items')
 def items():
@@ -61,6 +66,14 @@ def login():
             flash('Login unsuccessful','danger')
     return render_template('login.html',title='Login',form=form)
 
+def save_picture(form_picture):
+    random_hex=secrets.token_hex(8)
+    f_name,f_ext=os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path,'static\item_pics',picture_fn)
+    print(picture_path,"\n \n \n \n ")
+    form_picture.save(picture_path)
+    return picture_fn
 
 @app.route('/newitem', methods=['GET','POST'])
 def newitem():
@@ -71,7 +84,9 @@ def newitem():
         name=form.name.data
         price=form.price.data
         type=form.type.data
-        image_file=form.image.data
+        if form.picture.data:
+            picture_file=save_picture(form.picture.data)
+            image_file =  picture_file
         if Items.query.filter_by(name=name).first():
             flash(f'Name already used!','danger')
             return redirect(url_for('newitem'))
@@ -93,4 +108,5 @@ def logout():
 @app.route("/account")
 @login_required
 def account():
-    return render_template('account.html',title='Account')
+    image_file = url_for('static',filename='profile_pics/' + current_user.image_file)
+    return render_template('account.html',title='Account',image_file=image_file)

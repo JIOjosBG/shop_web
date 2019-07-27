@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
-  <form action="" method="POST">
+  <form action="" method="POST" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
-    <fieldset class="form-group">
+    <fieldset class="form-group" >
       <legend class="border-bottom mb-4">New item</legend>
       <div class="form-group">
         {{ form.name.label(class="form-control-label") }}
@@ -50,21 +50,20 @@
 
         {% endif %}
       </div>
+
+
       <div class="form-group">
-        {{ form.image.label(class="form-control-label") }}
-
-        {% if form.image.errors %}
-          {{ form.image(class="form-control form-control-lg is-invalid ") }}
-          <div class="invalid-feedback">
-            {% for error in form.image.errors %}
-              <span>{{ error }}</span>
-            {% endfor %}
-          </div>
-        {% else %}
-          {{ form.image(class="form-control-lg") }}
-
+        {{ form.picture.label() }}
+        {{ form.picture(class="form-control-file") }}
+        {% if form.picture.errors %}
+          {% for error in form.picture.errors %}
+            <br> <span class="text-danger">{{ error }}</span></br>
+          {% endfor %}
         {% endif %}
+
       </div>
+
+
     </fieldset>
     <div class="form-group">
       {{ form.submit(class="btn btn-outline-info") }}

@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 
@@ -26,5 +27,7 @@ class NewItemForm(FlaskForm):
     price = StringField('price', validators = [DataRequired()])
     type=StringField('type',
     validators=[DataRequired(),Length(min=1, max=50)])
-    image=StringField('Image')
+
+    picture = FileField('New Item picture',validators=[FileAllowed(['jpg','png'])])
+
     submit = SubmitField('AddItem')
