@@ -1,11 +1,10 @@
 from flask import render_template, flash, redirect, url_for, request
 from flaskblog import app, db, bcrypt
-from flaskblog.models import Users, Items
+from flaskblog.models import Users, Items, Orders
 from flaskblog.forms import RegistrationForm,LoginForm, NewItemForm
 from flask_login import login_user, current_user, logout_user, login_required
 
 itemlist=Items.query.all()
-
 
 @app.route('/')
 @app.route('/home')
@@ -39,7 +38,7 @@ def register():
             flash(f'Account created for {form.username.data}!','success')
             print(Users.query.all())
             return redirect(url_for('login'))
-            
+
         flash(f'Account created for {form.username.data}!','success')
         return redirect(url_for('home'))
     return render_template('register.html',title='Register',form=form)
@@ -83,7 +82,7 @@ def newitem():
             db.session.commit()
             flash(f'Item added {form.name.data}!','success')
             return redirect(url_for('items'))
-            
+
     return render_template('newitem.html',title='New Item',form=form)
 
 @app.route("/logout")

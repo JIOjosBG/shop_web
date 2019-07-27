@@ -1,3 +1,4 @@
+from datetime import datetime
 from flaskblog import db, login_manager
 from flask_login import UserMixin
 
@@ -14,6 +15,15 @@ class Users(db.Model, UserMixin):
 
     def __repr__(self):
         return f"User('{self.username}','{self.email}','{self.image_file}','{self.password}')"
+
+class Orders(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    itemid = db.Column(db.Integer,nullable=False)
+    userid = db.Column(db.Integer,nullable=False)
+    time = db.Column(db.DateTime,nullable=False,default=datetime.utcnow )
+
+    def __repr__(self):
+        return f"Orders('{self.id}','{self.itemid}','{self.userid}')"
 
 class Items(db.Model):
     id = db.Column(db.Integer, primary_key=True)
