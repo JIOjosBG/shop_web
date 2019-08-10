@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-  {% for item in items %}
+  {% for item in items.items %}
     <div class="container bg-g7" style=" border-radius: 5px; margin:1%;">
       {% set a = '..\\static\\item_pics\\' + item.image_file %}
       <img class="account-img" src="{{ a }}" alt="NO image">
@@ -9,5 +9,16 @@
       <h3>{{ item.image_file }}</h3>
       <h3>{{ a }}</h3>
     </div>
+  {% endfor %}
+  {% for page_num in items.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}  
+    {% if page_num %}
+      {% if items.page == page_num %}
+      <a class="btn btn-info mb-4"  href="{{ url_for('items.allitems',page=page_num) }}">{{page_num}}</a>
+      {%else%}
+      <a class="btn btn-outline-info mb-4"  href="{{ url_for('items.allitems',page=page_num) }}">{{page_num}}</a>
+      {% endif %}
+    {%else%}
+      ...
+    {% endif %}
   {% endfor %}
 {% endblock content %}
