@@ -11,7 +11,6 @@ items = Blueprint('items',__name__)
 @items.route('/items')
 def allitems():
     page = request.args.get('page',1,type=int)
-    print(page)
     show_items = Items.query.order_by(Items.id.desc()).paginate(page=page, per_page=10)
     return render_template("items.html",title='items',items=show_items)
 
@@ -57,5 +56,3 @@ def specific_items():
     #show_items = Items.query.filter_by(type=type)\
     #.order_by(Items.id.desc())\
     #.paginate(page=page, per_page=10)
-
-
