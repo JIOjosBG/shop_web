@@ -1,3 +1,6 @@
+import os
+import secrets
+from flaskblog.items.utils import save_picture
 from flask import render_template, flash, redirect, url_for, request, Blueprint
 from flask_login import login_user, current_user
 from flaskblog import db
@@ -15,9 +18,20 @@ def allitems():
     return render_template("items.html",title='items',items=show_items)
 
 
+#def save_picture(form_picture):
+#    random_hex = secrets.token_hex(8)
+#    _,f_ext = os.path.splitext(form_picture.filename)
+#    picture_fn = random_hex + f_ext
+#    picture_path = os.path.join(app.root_path,'static/item_pics', picture_fn)
+#    outpu_size = (125,125)
+#    i = Image.open(form_picture)
+#    i.thumbnail(outpu_size)
+#    i.save(picture_path)
+#    return picture_fn
+
 @items.route('/newitem', methods=['GET','POST'])
 def newitem():
-    form= NewItemForm()
+    form = NewItemForm()
     if form.validate_on_submit():
         print(Items.query.all())
         name=form.name.data
