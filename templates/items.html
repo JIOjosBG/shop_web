@@ -5,11 +5,12 @@
     {% for item in items.items %}
       <div class="container bg-g7" style=" border-radius: 5px; margin:1%;">
         {% set a = '..\\static\\item_pics\\' + item.image_file %}
-        <img class="account-img" src="{{ a }}" alt="NO image">
-        <h1>{{item.name}}</h1>
-        <h2>{{ item.price }}</h2>
-        <h3>{{ item.image_file }}</h3>
-        <h3>{{ a }}</h3>
+        <div class="jumbotron">
+          
+          <img class="account-img" src="{{ a }}" alt="NO image">
+          <h1>{{item.name}}</h1>
+          <h2>{{ item.price }}</h2>
+        </div>
       </div>
     {% endfor %}
   {% else %}

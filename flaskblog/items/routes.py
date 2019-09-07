@@ -40,16 +40,21 @@ def newitem():
         if form.picture.data:
             picture_file=save_picture(form.picture.data)
             image_file =  picture_file
+            new_item=Items(price=price,name=name,type=type,image_file=image_file)
         if Items.query.filter_by(name=name).first():
             flash(f'Name already used!','danger')
             return redirect(url_for('items.newitem'))
         else:
 
-            new_item=Items(price=price,name=name,type=type,image_file=image_file)
-            db.session.add(new_item)
-            db.session.commit()
-            flash(f'Item added {form.name.data}!','success')
-            return redirect(url_for('items.allitems'))
+            if new_item:
+                db.session.add(new_item)
+                db.session.commit()
+                flash(f'Item added {form.name.data}!','success')
+                return redirect(url_for('items.allitems'))
+            else:
+                flash(f'Put image','danger')
+                return redirect(url_for('items.newitem'))
+
 
     return render_template('newitem.html',title='New Item',form=form)
 

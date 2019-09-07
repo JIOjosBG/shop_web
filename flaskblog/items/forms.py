@@ -12,6 +12,6 @@ class NewItemForm(FlaskForm):
     type=StringField('type',
     validators=[DataRequired(),Length(min=1, max=50)])
 
-    picture = FileField('New Item picture',validators=[FileAllowed(['jpg','png'])])
+    picture = FileField('New Item picture',validators=[FileAllowed(['jpg','png','jpeg'])])
 
     submit = SubmitField('AddItem')
